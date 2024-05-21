@@ -1,4 +1,4 @@
-# Si tu ne t'appelles pas Ethan et que tu n'as pas installé le module psutil je te conseille de le faire
+# Si tu ne t'appelles pas Ethan et que tu n'as pas installé le module psutil je te conseille de le faire !
 
 
 import psutil    # Module permettant la gestion des processus
