@@ -31,15 +31,38 @@ with open('applications.json', 'r') as data:    # Ouverture du fichier json en m
 
 row = 0    # Variable repésentant les lignes de la grid
 
-for appli in applications.get("applications"):    # Affichage des applications
+
+i = 0    # Itérateur pour le nombre de lignes de la grid
+
+for appli in applications.get("applications"):    # Affichage des applications dans la framescroll
     
-    label = customtkinter.CTkLabel(scrollable_frame_applications, text=f'{appli}', width=40, height=28, fg_color='transparent')    # Label des applications du json
+    label = customtkinter.CTkLabel(scrollable_frame_applications, text=f'{appli.replace(".exe","")}', width=40, height=28, fg_color='transparent')    # Label des applications du json
     label.grid(padx = (10,0), pady = (10,0), column = 1, row = row)
     
-    button_delete = customtkinter.CTkButton(scrollable_frame_applications, text='Delete', width=40, height=28, corner_radius=1)    # Bouton pour supprimer les apps
+    def delete(i):    # Fontion pour la suppression des applications initialements présentes
+        
+        # supprimer le bouton
+        button = scrollable_frame_applications.grid_slaves(row=i, column=1)[0]    # scrollable_frame_applications.grid_slaves(row=i, column=1) retoune tous les widgets enfants de la frame de la ligne i et de la colonne 1
+        button.destroy()
+        
+        # supprimer le label
+        label = scrollable_frame_applications.grid_slaves(row=i, column=2)[0]
+        label.destroy()
+        
+        list_appli = applications.get("applications")
+        
+        list_appli.remove(list_appli[i])    # Suppression de l'application de la liste des applications
+        
+        with open('applications.json', 'w') as data:    # Ouverture du fichier json en mode write
+            
+            json.dump(applications, data, indent=4)    # Conversion de l'objet python avec les nouvelles applications en fichier json et modification du fichier json
+    
+    button_delete = customtkinter.CTkButton(scrollable_frame_applications, text='Delete', width=40, height=28, corner_radius=1,  command = lambda i = i : delete(i))    # Bouton pour la suppression des applications
     button_delete.grid(padx = (5,0), column = 2, pady = (10,0), row = row)
     
     row += 1    # Incrémentation de la variable des lignes de 1
+    
+    i += 1     # Incrémentation
 
 
 
@@ -54,6 +77,10 @@ def add():    # Fonction rattachée au bouton add
     elif new_app == "":
         
         label_error.configure(text = "Please enter an app name")    # Message d'erreur en cas de champs non rempli
+    
+    elif len(new_app) >= 50:
+        
+        label_error.configure(text = "Invalid entry")    # Message d'erreur en cas d'application trop longue
     
     else:
         
@@ -75,18 +102,14 @@ def add():    # Fonction rattachée au bouton add
         label = customtkinter.CTkLabel(scrollable_frame_applications, text=f'{new_app}', width=40, height=28, fg_color='transparent')    # Label des applications du json
         label.grid(padx = (10,0), pady = (10,0), column = 1, row = row)
         
-        
-        def delete():    # Fonction pour supprimer les applications
-            pass
-        
-        button_delete = customtkinter.CTkButton(scrollable_frame_applications, text='Delete', width=40, height=28, corner_radius=1)    # Bouton pour la suppression des applications
+        button_delete = customtkinter.CTkButton(scrollable_frame_applications, text='Delete', width=40, height=28, corner_radius=1,  command = lambda i = i : delete(i))    # Bouton pour la suppression des applications
         button_delete.grid(padx = (5,0), column = 2, pady = (10,0), row = row)
         
         row += 1    # Incrémentation de la variable des lignes de 1
     
     with open('applications.json', 'w') as data:    # Ouverture du fichier json en mode write
         
-        json.dump(applications, data, indent=4)    # Conversion de l'objet python avec les nouvelles applications en fichier json et modification du fichier json ! 
+        json.dump(applications, data, indent=4)    # Conversion de l'objet python avec les nouvelles applications en fichier json et modification du fichier json 
 
 
 
