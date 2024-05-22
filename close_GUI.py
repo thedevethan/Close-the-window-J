@@ -86,7 +86,7 @@ def add():    # Fonction rattachée au bouton add
     
     with open('applications.json', 'w') as data:    # Ouverture du fichier json en mode write
         
-        json.dump(applications, data, indent=4)    # Conversion de l'objet python avec les nouvelles applications en fichier json et modification du fichier json 
+        json.dump(applications, data, indent=4)    # Conversion de l'objet python avec les nouvelles applications en fichier json et modification du fichier json ! 
 
 
 
