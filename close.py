@@ -28,7 +28,9 @@ class Processus:    # Classe Processus contenant des méthodes pour gérer les p
             
             if proc.name() == name:    # Vérification de la condition suivante: si le nom de processus entré en paramètre correspond à un processus en cours
                 
-                proc.kill()    # Arrêt du processus en cours une fois identifié
+                if proc.is_running:    # Vérification de la condition suivante: si le processus est en cours
+                    
+                    proc.kill()    # Arrêt du processus en cours une fois identifié
 
 
 
@@ -40,7 +42,7 @@ def main():    # Fonction principale
     
     obj = Processus()    # Création d'une instance de la classe Processus
     
-    "print(obj.list_process())"   # Si tu veux voir la liste des processus en cours tu peux utiliser la méthode list_process()
+    #print(obj.list_process())   # Si tu veux voir la liste des processus en cours tu peux utiliser la méthode list_process()
     
     List_of_applications_to_close = applications.get("applications")    # Si tu veux ajouter une autre application tu dois mettre le nom exact du processus
     
