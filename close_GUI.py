@@ -9,11 +9,11 @@ import sys    # Module permettant d'interagir avec l'interpréteur python
 
 import ctypes # Module permmettant d'interagir avec des bibliothèques externes
 
-if not ctypes.windll.shell32.IsUserAnAdmin():    # Vérification de la condition suivante: Si l'utilisateur a les droits administrateurs
+"""if not ctypes.windll.shell32.IsUserAnAdmin():    # Vérification de la condition suivante: Si l'utilisateur a les droits administrateurs
     
     ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)    # Demande à l'utilisateur d'élever ses privilèges
     
-    sys.exit()    # Arrêt du processus
+    sys.exit()    # Arrêt du processus"""
 
 
 app = customtkinter.CTk()    # Instanciation de la classe
@@ -35,7 +35,7 @@ entry = customtkinter.CTkEntry(app, placeholder_text='Exact App name', width=140
 entry.place(x = 85, y = 20,)
 
 scrollable_frame_applications = customtkinter.CTkScrollableFrame(app, width=200, height=268, corner_radius= 0, fg_color= "transparent")    # Frame pour les applications
-scrollable_frame_applications.pack(pady = (0,15), side = "bottom", fill="both")
+scrollable_frame_applications.pack(pady = (60,0), fill="both")
 
 with open('applications.json', 'r') as data:    # Ouverture du fichier json en mode read
     
@@ -145,7 +145,15 @@ def button_event():
     frame_app_names.title('CTW-J')    # Nom de la fenêtre
 
 
-button_app_name = customtkinter.CTkButton(app, text='App\nnames', width=20, height=28, font = font_app_name, corner_radius = 1, command = button_event)
+button_app_name = customtkinter.CTkButton(app, text='App\nnames', width=40, height=28, font = font_app_name, corner_radius = 1, command = button_event)
 button_app_name.place(x=284, y=20)
+
+
+def button_event():
+    print('button pressed')
+
+font_save = customtkinter.CTkFont(weight = "bold")
+bouton_save = customtkinter.CTkButton(app, text='Save Changes', width=140, height=15, corner_radius= 0, font = font_save, command = button_event)
+bouton_save.pack(side = "bottom", fill = "x")    # Fill = "x" pour que le bouton occupe toute la largeur disponible 
 
 app.mainloop()    # Méthode pour l'exécution de l'interface
