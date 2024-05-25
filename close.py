@@ -3,14 +3,16 @@
 
 import psutil    # Module permettant la gestion des processus
 
+import json    # Module permettant d'interagir avec le fichier json
 
-class processus:    # Classe Processus contenant des méthodes pour gérer les processus
+
+class Processus:    # Classe Processus contenant des méthodes pour gérer les processus
     
     def __init__(self):    # Constructeur initial
         
         pass
     
-    def list_process(self):    # Méthode servant à lister les processus en cours
+    def list_process(self):    # Méthode retournant une liste contenant tous les processus en cours
         
         list_sorted = []    # Initialisation de la liste qui va contenir les noms des processus en cours
         
@@ -18,9 +20,7 @@ class processus:    # Classe Processus contenant des méthodes pour gérer les p
             
             list_sorted.append(proc.name())    # L'application de la méthode name à l'objet représentant le processus renvoie son nom exacte, ajout du nom du processus à la liste list_sorted
         
-        for proc in sorted(list_sorted):    # Itération sur la liste liste list_sorted triée
-            
-            print(proc)    # Affichage du processus en cours
+        return sorted(list_sorted)    # Retour au programme d'une liste triée contenant tous les noms des processus en cours
     
     def kill_process(self,name):    # Méthode servant à arrêter un processus en cours, avec pour paramètre le nom du processus que l'on veut arrêter
         
@@ -34,14 +34,20 @@ class processus:    # Classe Processus contenant des méthodes pour gérer les p
 
 def main():    # Fonction principale
     
-    obj = processus()    # Création d'une instance de la classe Processus
+    with open("applications.json", 'r') as data:    # with pour manipuler le flux des fichiers, ouvrir le fichier json en mode read, data contient le fichier json
+        
+        applications = json.load(data)    # Chargement du fichier json dans un objet python
     
-    "obj.list_process()"   # Si tu veux voir la liste des processus en cours tu peux utiliser la méthode list_process()
+    obj = Processus()    # Création d'une instance de la classe Processus
     
-    List_of_applications_to_close = ["steam.exe", "opera.exe", "Discord.exe"]    # Si tu veux ajouter une autre application tu dois mettre le nom exact du processus
+    "print(obj.list_process())"   # Si tu veux voir la liste des processus en cours tu peux utiliser la méthode list_process()
+    
+    List_of_applications_to_close = applications.get("applications")    # Si tu veux ajouter une autre application tu dois mettre le nom exact du processus
     
     for name in List_of_applications_to_close:    # Itération sur les éléments de la liste des applicqtions à fermer pour pouvoir les fermer
         
-        obj.kill_process(name)    # Application de la méthode kill_process à l'instance de la classe pour arrêter le processus en cours 
+        if name in obj.list_process():    # Vérification de la condition suivante: Si le nom de l'application se trouve dans la liste des processus en cours
+            
+            obj.kill_process(name)    # Application de la méthode kill_process à l'instance de la classe pour arrêter le processus en cours 
 
 main()
