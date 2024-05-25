@@ -4,6 +4,18 @@ import psutil    # Module pour relever des informations relatifs aux processus a
 
 import json # Module pour interagir avec le fichier json
 
+
+import sys    # Module permettant d'interagir avec l'interpréteur python
+
+import ctypes # Module permmettant d'interagir avec des bibliothèques externes
+
+if not ctypes.windll.shell32.IsUserAnAdmin():    # Vérification de la condition suivante: Si l'utilisateur a les droits administrateurs
+    
+    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)    # Demande à l'utilisateur d'élever ses privilèges
+    
+    sys.exit()    # Arrêt du processus
+
+
 app = customtkinter.CTk()    # Instanciation de la classe
 
 app.geometry('360x350')    # Définition de la taille de la fenêtre
@@ -99,6 +111,8 @@ def add():    # Fonction rattachée au bouton add
         
         global row    # Variable pour les lignes définie plus haut
         
+        global i
+
         label = customtkinter.CTkLabel(scrollable_frame_applications, text=f'{new_app}', width=40, height=28, fg_color='transparent')    # Label des applications du json
         label.grid(padx = (10,0), pady = (10,0), column = 1, row = row)
         
@@ -106,11 +120,12 @@ def add():    # Fonction rattachée au bouton add
         button_delete.grid(padx = (5,0), column = 2, pady = (10,0), row = row)
         
         row += 1    # Incrémentation de la variable des lignes de 1
+        
+        i += 1    # Incrémentation
     
     with open('applications.json', 'w') as data:    # Ouverture du fichier json en mode write
         
         json.dump(applications, data, indent=4)    # Conversion de l'objet python avec les nouvelles applications en fichier json et modification du fichier json 
-
 
 
 
