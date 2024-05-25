@@ -1,19 +1,21 @@
+import subprocess
 import customtkinter    # Module pour le GUI
 
 import psutil    # Module pour relever des informations relatifs aux processus actifs
 
 import json # Module pour interagir avec le fichier json
 
+import shutil
 
 import sys    # Module permettant d'interagir avec l'interpréteur python
 
 import ctypes # Module permmettant d'interagir avec des bibliothèques externes
 
-"""if not ctypes.windll.shell32.IsUserAnAdmin():    # Vérification de la condition suivante: Si l'utilisateur a les droits administrateurs
+if not ctypes.windll.shell32.IsUserAnAdmin():    # Vérification de la condition suivante: Si l'utilisateur a les droits administrateurs
     
     ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)    # Demande à l'utilisateur d'élever ses privilèges
     
-    sys.exit()    # Arrêt du processus"""
+    sys.exit()    # Arrêt du processus
 
 
 app = customtkinter.CTk()    # Instanciation de la classe
@@ -149,11 +151,12 @@ button_app_name = customtkinter.CTkButton(app, text='App\nnames', width=40, heig
 button_app_name.place(x=284, y=20)
 
 
-def button_event():
-    print('button pressed')
+def move():
+    
+    shutil.move("short.c", "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\short.c")
 
 font_save = customtkinter.CTkFont(weight = "bold")
-bouton_save = customtkinter.CTkButton(app, text='Save Changes', width=140, height=15, corner_radius= 0, font = font_save, command = button_event)
+bouton_save = customtkinter.CTkButton(app, text='Save Changes', width=140, height=15, corner_radius= 0, font = font_save, command = move)
 bouton_save.pack(side = "bottom", fill = "x")    # Fill = "x" pour que le bouton occupe toute la largeur disponible 
 
 app.mainloop()    # Méthode pour l'exécution de l'interface
