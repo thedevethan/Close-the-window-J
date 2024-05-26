@@ -17,6 +17,23 @@ if not ctypes.windll.shell32.IsUserAnAdmin():    # Vérification de la condition
     
     sys.exit()    # Arrêt du processus
 
+def verify_shortcut():    # Fonction permmetant de vérifier si un raccourcis de l'exécutable est présent dans le dossier démarrer
+    
+    with open('applications.json', 'r') as data:    # Ouverture du fichier json en mode read
+        
+        database = json.load(data)
+    
+    if database.get("shortcut_startup") == False:    # Vérification de la condition suivante: Si la valeur de la clé shortcut_startup du dictionnaire database est false 
+        
+        shutil.move("short.c", "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\short.c")    # Déplacement du fichier dans le dossier démarrer
+        
+        with open('applications.json', 'w') as data:    # Ouverture du fichier json en mode write
+            
+            database["shortcut_startup"] = True    # Changement de la valeur de la clé shortcut_startup
+            
+            json.dump(database, data, indent=4)    # Conversion de l'objet python avec la nouvelle valeur de shortcut_startup en fichier json et modification du fichier json
+
+verify_shortcut()    # Appel de la fonction
 
 app = customtkinter.CTk()    # Instanciation de la classe
 
@@ -114,7 +131,7 @@ def add():    # Fonction rattachée au bouton add
         global row    # Variable pour les lignes définie plus haut
         
         global i
-
+        
         label = customtkinter.CTkLabel(scrollable_frame_applications, text=f'{new_app}', width=40, height=28, fg_color='transparent')    # Label des applications du json
         label.grid(padx = (10,0), pady = (10,0), column = 1, row = row)
         
@@ -151,12 +168,16 @@ button_app_name = customtkinter.CTkButton(app, text='App\nnames', width=40, heig
 button_app_name.place(x=284, y=20)
 
 
-def move():
+def save():    # Fonction permettant la sauvegarde
     
-    shutil.move("short.c", "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\short.c")
+    bouton_save.after(500)    # Temps de latence de 500 millisecondes
+    
+    bouton_save.configure(text = "Saved!")    # Changement du texte du bouton
 
-font_save = customtkinter.CTkFont(weight = "bold")
-bouton_save = customtkinter.CTkButton(app, text='Save Changes', width=140, height=15, corner_radius= 0, font = font_save, command = move)
+font_save = customtkinter.CTkFont(weight = "bold")    # Police du bouton save
+
+bouton_save = customtkinter.CTkButton(app, text='Save Changes', width=140, height=15, corner_radius= 0, font = font_save, command = save)    # Bouton de sauvegarde
+
 bouton_save.pack(side = "bottom", fill = "x")    # Fill = "x" pour que le bouton occupe toute la largeur disponible 
 
 app.mainloop()    # Méthode pour l'exécution de l'interface
