@@ -1,4 +1,4 @@
-import subprocess
+
 import customtkinter    # Module pour le GUI
 
 import psutil    # Module pour relever des informations relatifs aux processus actifs
@@ -11,11 +11,11 @@ import sys    # Module permettant d'interagir avec l'interpréteur python
 
 import ctypes # Module permmettant d'interagir avec des bibliothèques externes
 
-if not ctypes.windll.shell32.IsUserAnAdmin():    # Vérification de la condition suivante: Si l'utilisateur a les droits administrateurs
+"""if not ctypes.windll.shell32.IsUserAnAdmin():    # Vérification de la condition suivante: Si l'utilisateur a les droits administrateurs
     
     ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)    # Demande à l'utilisateur d'élever ses privilèges
     
-    sys.exit()    # Arrêt du processus
+    sys.exit()    # Arrêt du processus"""
 
 def verify_shortcut():    # Fonction permmetant de vérifier si un raccourcis de l'exécutable est présent dans le dossier démarrer
     
@@ -41,7 +41,7 @@ app.geometry('360x350')    # Définition de la taille de la fenêtre
 
 app.resizable(False, False)    # Désactivation de la redimensionnement de la fenêtre
 
-app.title('CTW-J')    # Nom de la fenêtre
+app.title('Close the window J')    # Nom de la fenêtre
 
 app.iconbitmap("window-close-regular-24.ico")    # Icône de la fenêtre
 
@@ -67,6 +67,7 @@ i = 0    # Itérateur pour le nombre de lignes de la grid
 
 for appli in applications.get("applications"):    # Affichage des applications dans la framescroll
     
+    print(i)
     label = customtkinter.CTkLabel(scrollable_frame_applications, text=f'{appli.replace(".exe","")}', width=40, height=28, fg_color='transparent')    # Label des applications du json
     label.grid(padx = (10,0), pady = (10,0), column = 1, row = row)
     
@@ -87,6 +88,8 @@ for appli in applications.get("applications"):    # Affichage des applications d
         with open('applications.json', 'w') as data:    # Ouverture du fichier json en mode write
             
             json.dump(applications, data, indent=4)    # Conversion de l'objet python avec les nouvelles applications en fichier json et modification du fichier json
+        print(applications.get("applications"))
+        print(i)
     
     button_delete = customtkinter.CTkButton(scrollable_frame_applications, text='Delete', width=40, height=28, corner_radius=1,  command = lambda i = i : delete(i))    # Bouton pour la suppression des applications
     button_delete.grid(padx = (5,0), column = 2, pady = (10,0), row = row)
@@ -96,8 +99,8 @@ for appli in applications.get("applications"):    # Affichage des applications d
     i += 1     # Incrémentation
 
 
-
-def add():    # Fonction rattachée au bouton add
+i_supp = 0
+def add(event):    # Fonction rattachée au bouton add
     
     new_app = entry.get()    # Récupération de l'entrée de l'utilisateur
     
@@ -127,25 +130,53 @@ def add():    # Fonction rattachée au bouton add
             *list_appli    # Dépaquétage de la liste pour intégrer ces éléments au dictionnaire
             
         ]
+        global row
+        # Variable pour les lignes définie plus haut
         
-        global row    # Variable pour les lignes définie plus haut
         
-        global i
+        global i_supp
         
+        print(i_supp)
+
         label = customtkinter.CTkLabel(scrollable_frame_applications, text=f'{new_app}', width=40, height=28, fg_color='transparent')    # Label des applications du json
         label.grid(padx = (10,0), pady = (10,0), column = 1, row = row)
         
-        button_delete = customtkinter.CTkButton(scrollable_frame_applications, text='Delete', width=40, height=28, corner_radius=1,  command = lambda i = i : delete(i))    # Bouton pour la suppression des applications
-        button_delete.grid(padx = (5,0), column = 2, pady = (10,0), row = row)
+        def delete2(i_supp):
+            
+            # supprimer le bouton
+            button = scrollable_frame_applications.grid_slaves(row=i_supp, column=1)[0]    # scrollable_frame_applications.grid_slaves(row=i, column=1) retoune tous les widgets enfants de la frame de la ligne i et de la colonne 1
+            button.destroy()
         
+            # supprimer le label
+            label = scrollable_frame_applications.grid_slaves(row=i_supp, column=2)[0]
+            label.destroy()
+
+
+
+        
+            list_appli = applications.get("applications")
+        
+            list_appli.remove(list_appli[i_supp])    # Suppression de l'application de la liste des applications
+        
+            with open('applications.json', 'w') as data:    # Ouverture du fichier json en mode write
+                
+                json.dump(applications, data, indent=4)    # Conversion de l'objet python avec les nouvelles applications en fichier json et modification du fichier json
+
+        button_delete = customtkinter.CTkButton(scrollable_frame_applications, text='Delete', width=40, height=28, corner_radius=1,  command = lambda i = i_supp : delete2(i))    # Bouton pour la suppression des applications
+        button_delete.grid(padx = (5,0), column = 2, pady = (10,0), row = row)
+
         row += 1    # Incrémentation de la variable des lignes de 1
         
-        i += 1    # Incrémentation
+        i_supp += 1    # Incrémentation
+        
+
     
     with open('applications.json', 'w') as data:    # Ouverture du fichier json en mode write
         
         json.dump(applications, data, indent=4)    # Conversion de l'objet python avec les nouvelles applications en fichier json et modification du fichier json 
 
+
+entry.bind("<Return>", add)    # Ajout d'une application suite à l'appui de  la touche Entrée de l'ordinateur
 
 
 add_button = customtkinter.CTkButton(app, text='Add', width=40, height=28, corner_radius= 1, command = add)    # Bouton ajouter
@@ -156,11 +187,11 @@ font_app_name = customtkinter.CTkFont(size = 9)
 def button_event():
     
     frame_app_names = customtkinter.CTkToplevel(app)
-
+    
     frame_app_names.geometry('360x350')    # Définition de la taille de la fenêtre
-
+    
     frame_app_names.resizable(False, False)    # Désactivation de la redimensionnement de la fenêtre
-
+    
     frame_app_names.title('CTW-J')    # Nom de la fenêtre
 
 
