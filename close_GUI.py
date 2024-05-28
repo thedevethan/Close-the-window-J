@@ -58,54 +58,44 @@ entry.place(x = 85, y = 20,)
 scrollable_frame_applications = customtkinter.CTkScrollableFrame(app, width=200, height=268, corner_radius= 0, fg_color= "transparent")    # Frame pour les applications
 scrollable_frame_applications.pack(pady = (60,0), fill="both")
 
-def clear(event):
-    event.widget.destroy()
 
 with open('applications.json', 'r') as data:    # Ouverture du fichier json en mode read
     
     applications = json.load(data)    # Chargement du fichier json en dictionnaire
 
+def delete(index, appli):    # Fontion pour la suppression des applications initialements présentes
+    
+    list_child = scrollable_frame_applications.winfo_children()    # Obtention de la liste de tous les enfants de la frame scrollframe
+    
+    index_button_child = list_child.index(buttons[index])    # Obtention de l'index du bouton dans la liste des enfants de la frame scrollframe
+    
+    list_child[index_button_child-1].destroy()    # Destruction de l'enfant qui précède le bouton (le label)
+    
+    buttons[index].destroy()    # Destruction du bouton
+    
+    list_appli = applications.get("applications")    # Liste contenant les applications du json
+    
+    list_appli.remove(appli)    # Suppression de l'application de la liste des applications
+    
+    with open('applications.json', 'w') as data:    # Ouverture du fichier json en mode write
+        
+        json.dump(applications, data, indent=4)    # Conversion de l'objet python avec les nouvelles applications en fichier json et modification du fichier json
+
 row = 0    # Variable repésentant les lignes de la grid
 
+buttons = []    # Liste qui va contenir tous les boutons
 
-
-buttons = [] 
-
-
-for index, appli in enumerate(applications.get("applications")):    # Affichage des applications dans la framescroll
+for index, appli in enumerate(applications.get("applications")):    # Affichage des applications dans la framescroll, utilisation de la fonction enumerate pour l'itérationn sur l'index de l'élément de la liste et sur l'élément lui même
     
-
     label = customtkinter.CTkLabel(scrollable_frame_applications, text=f'{appli.replace(".exe","")}', width=40, height=28, fg_color='transparent')    # Label des applications du json
     label.grid(padx = (10,0), pady = (10,0), column = 1, row = row)
-    
-    def delete(index, appli):    # Fontion pour la suppression des applications initialements présentes
-
-        list_child = scrollable_frame_applications.winfo_children()
-        index_button_child = list_child.index(buttons[index])
-        list_child[index_button_child-1].destroy()
-        buttons[index].destroy()
-
-
-
-        list_appli = applications.get("applications")
-        
-        list_appli.remove(appli)    # Suppression de l'application de la liste des applications
-        
-        with open('applications.json', 'w') as data:    # Ouverture du fichier json en mode write
-            
-            json.dump(applications, data, indent=4)    # Conversion de l'objet python avec les nouvelles applications en fichier json et modification du fichier json
-        print(applications.get("applications"))
-        print(buttons)
     
     buttons.append(customtkinter.CTkButton(scrollable_frame_applications, text='Delete', width=40, height=28, corner_radius=1, command = partial(delete, index, appli)))    # Bouton pour la suppression des applications
     buttons[index].grid(padx = (5,0), column = 2, pady = (10,0), row = row)
     
     row += 1    # Incrémentation de la variable des lignes de 1
-    
 
-
-
-def add(event):    # Fonction rattachée au bouton add
+def add(event):    # Fonction rattachée au bouton add, event pour faire référence à l'évennement définie ppour cette fonction
     
     new_app = entry.get()    # Récupération de l'entrée de l'utilisateur
     
@@ -135,27 +125,19 @@ def add(event):    # Fonction rattachée au bouton add
             *list_appli    # Dépaquétage de la liste pour intégrer ces éléments au dictionnaire
             
         ]
-        global row
-        # Variable pour les lignes définie plus haut
         
+        global row    # Variable pour les lignes définie plus haut
         
-
-
         label = customtkinter.CTkLabel(scrollable_frame_applications, text=f'{new_app}', width=40, height=28, fg_color='transparent')    # Label des applications du json
         label.grid(padx = (10,0), pady = (10,0), column = 1, row = row)
         
-        index = len(buttons)
-
-        buttons.append(customtkinter.CTkButton(scrollable_frame_applications, text='Delete', width=40, height=28, corner_radius=1, command = partial(delete,index, new_app + ".exe")))    # Bouton pour la suppression des applications
-        buttons[index].grid(padx = (5,0), column = 2, pady = (10,0), row = row)
-        row += 1    # Incrémentation de la variable des lignes de 1
-        print(len(buttons))
-        print(applications.get("applications"))
-        print(buttons)
-
+        index = len(buttons)    # Index des boutons delete qui vont s'ajouter au fur et à mesure
         
+        buttons.append(customtkinter.CTkButton(scrollable_frame_applications, text='Delete', width=40, height=28, corner_radius=1, command = partial(delete,index, new_app + ".exe")))    # Ajout du bouton créé dans la liste boutons qui contient tous les autres boutons
+        buttons[index].grid(padx = (5,0), column = 2, pady = (10,0), row = row)
+        
+        row += 1    # Incrémentation de la variable des lignes de 1
 
-    
     with open('applications.json', 'w') as data:    # Ouverture du fichier json en mode write
         
         json.dump(applications, data, indent=4)    # Conversion de l'objet python avec les nouvelles applications en fichier json et modification du fichier json 
@@ -167,7 +149,7 @@ entry.bind("<Return>", add)    # Ajout d'une application suite à l'appui de  la
 add_button = customtkinter.CTkButton(app, text='Add', width=40, height=28, corner_radius= 1)    # Bouton ajouter
 add_button.place(x = 235, y = 20)
 
-add_button.bind("<ButtonRelease-1>", add)    # Ajout d'une application suite à l'appui de  la touche
+add_button.bind("<ButtonRelease-1>", add)    # Ajout d'une application suite à l'appui de la touche add définie dans l'application
 
 font_app_name = customtkinter.CTkFont(size = 9)
 
