@@ -45,7 +45,7 @@ app.resizable(False, False)    # Désactivation de la redimensionnement de la fe
 
 app.title('Close the window J')    # Nom de la fenêtre
 
-app.iconbitmap("window-close-regular-24.ico")    # Icône de la fenêtre
+app.iconbitmap("window-close-regular-24 (1).ico")    # Icône de la fenêtre
 
 font_error = customtkinter.CTkFont(size= 11)    # Taille pour le message d'erreur 
 
@@ -151,9 +151,9 @@ add_button.place(x = 235, y = 20)
 
 add_button.bind("<ButtonRelease-1>", add)    # Ajout d'une application suite à l'appui de la touche add définie dans l'application
 
-font_app_name = customtkinter.CTkFont(size = 9)
+font_app_name = customtkinter.CTkFont(size = 9)    # Taille du bouton App names
 
-def button_event():
+def process_information():    # Fonction pour l'affichage de la deuxième fenêtre
     
     frame_app_names = customtkinter.CTkToplevel(app)
     
@@ -161,10 +161,20 @@ def button_event():
     
     frame_app_names.resizable(False, False)    # Désactivation de la redimensionnement de la fenêtre
     
-    frame_app_names.title('CTW-J')    # Nom de la fenêtre
+    frame_app_names.title('Close the window J')    # Nom de la fenêtre
+    
+    scrollable_frame = customtkinter.CTkScrollableFrame(frame_app_names, width=200, height=200)    # Frame scrollante à l'intérieur de la frame
+    
+    scrollable_frame.pack(expand = "True", fill = "both")
+    
+    for proc in psutil.process_iter():    # Itération sur informations brutes du processus
+        
+        label = customtkinter.CTkLabel(scrollable_frame, text= f'{proc.name()}', width=40, height=28, fg_color='transparent')    # Affichage des processus actifs
+        
+        label.pack()
 
 
-button_app_name = customtkinter.CTkButton(app, text='App\nnames', width=40, height=28, font = font_app_name, corner_radius = 1, command = button_event)
+button_app_name = customtkinter.CTkButton(app, text='App\nnames', width=40, height=28, font = font_app_name, corner_radius = 1, command = process_information)    # Bouton app name
 button_app_name.place(x=284, y=20)
 
 
