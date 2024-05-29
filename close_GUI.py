@@ -13,11 +13,11 @@ import sys    # Module permettant d'interagir avec l'interpréteur python
 
 import ctypes # Module permmettant d'interagir avec des bibliothèques externes
 
-"""if not ctypes.windll.shell32.IsUserAnAdmin():    # Vérification de la condition suivante: Si l'utilisateur a les droits administrateurs
+if not ctypes.windll.shell32.IsUserAnAdmin():    # Vérification de la condition suivante: Si l'utilisateur a les droits administrateurs
     
     ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)    # Demande à l'utilisateur d'élever ses privilèges
     
-    sys.exit()    # Arrêt du processus"""
+    sys.exit()    # Arrêt du processus
 
 def verify_shortcut():    # Fonction permmetant de vérifier si un raccourcis de l'exécutable est présent dans le dossier démarrer
     
@@ -27,7 +27,7 @@ def verify_shortcut():    # Fonction permmetant de vérifier si un raccourcis de
     
     if database.get("shortcut_startup") == False:    # Vérification de la condition suivante: Si la valeur de la clé shortcut_startup du dictionnaire database est false 
         
-        shutil.move("short.c", "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\short.c")    # Déplacement du fichier dans le dossier démarrer
+        shutil.move("close - Raccourci.lnk", "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\close - Raccourci.lnk")    # Déplacement du fichier dans le dossier démarrer
         
         with open('applications.json', 'w') as data:    # Ouverture du fichier json en mode write
             
@@ -45,7 +45,7 @@ app.resizable(False, False)    # Désactivation de la redimensionnement de la fe
 
 app.title('Close the window J')    # Nom de la fenêtre
 
-app.iconbitmap("window-close-regular-24 (1).ico")    # Icône de la fenêtre
+app.iconbitmap("window-close.ico")    # Icône de la fenêtre
 
 font_error = customtkinter.CTkFont(size= 11)    # Taille pour le message d'erreur 
 
