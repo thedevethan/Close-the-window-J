@@ -1,7 +1,10 @@
-Si tu veux par exemple fermer automatiquement les applications qui se lancent dès le démarrage de ton ordinnateur, voici une proposition de démarche: 
+Logiciel windows développé en python. Celui-ci permet la fermetture automatique d'applications sélectionnées en utilisant le nom exact de l'application sans (.exe). Ces applications seront fermées automatiquement après leur ouverture au démarrage de l'ordinateur (ouverture qui, ne dépend pas de l'utilisateur).
 
-1. Créer un exécutable du script avec le module pyinstaller (faire pyinstaller --onefile --noconsole /chemin_vers_le_script/ pour créer l'exécutable),
-  
-2. Créer un raccourci de l'exécutable,
+<img width="272" alt="python_hctwUl2bHj" src="https://github.com/thedevethan/Close-the-window-J/assets/170204507/cac04cb4-d13b-429f-86a1-8d87f8fabf40">
 
-3. Le copier et le coller dans le dossier "Démarrage" de ton ordinateur en suivant ce chemin "C:\ProgramData\Microsoft\Windows\Menu Démarrer\Programmes\Démarrage"
+Pour obtenir le nom exact d'une application vous pouvez cliquer sur le bouton "App names" pour obtenir le nom de toutes les applications en cours.
+
+<img width="272" alt="close_GUI_dU3chEqfsx" src="https://github.com/thedevethan/Close-the-window-J/assets/170204507/110937fe-cd93-42a6-bc52-ba8424bb0c98">
+
+
+
