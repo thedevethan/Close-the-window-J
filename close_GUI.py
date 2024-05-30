@@ -13,11 +13,6 @@ import sys    # Module permettant d'interagir avec l'interpréteur python
 
 import ctypes # Module permmettant d'interagir avec des bibliothèques externes
 
-if not ctypes.windll.shell32.IsUserAnAdmin():    # Vérification de la condition suivante: Si l'utilisateur a les droits administrateurs
-    
-    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)    # Demande à l'utilisateur d'élever ses privilèges
-    
-    sys.exit()    # Arrêt du processus
 
 def verify_shortcut():    # Fonction permmetant de vérifier si un raccourcis de l'exécutable est présent dans le dossier démarrer
     
