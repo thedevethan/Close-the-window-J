@@ -2,7 +2,7 @@ Logiciel windows développé en python. Celui-ci permet la fermetture automatiqu
 
 <img width="272" alt="python_hctwUl2bHj" src="https://github.com/thedevethan/Close-the-window-J/assets/170204507/cac04cb4-d13b-429f-86a1-8d87f8fabf40">
 
-Pour obtenir le nom exact d'une application vous pouvez cliquer sur le bouton "App names" pour le nom de toutes les applications en cours.
+Pour obtenir le nom exact d'une application vous pouvez cliquer sur le bouton "App names" pour obtenir le nom de toutes les applications en cours.
 
 <img width="272" alt="close_GUI_dU3chEqfsx" src="https://github.com/thedevethan/Close-the-window-J/assets/170204507/110937fe-cd93-42a6-bc52-ba8424bb0c98">
 
