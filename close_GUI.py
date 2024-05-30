@@ -27,7 +27,7 @@ def verify_shortcut():    # Fonction permmetant de vérifier si un raccourcis de
     
     if database.get("shortcut_startup") == False:    # Vérification de la condition suivante: Si la valeur de la clé shortcut_startup du dictionnaire database est false 
         
-        shutil.move("close - Raccourci.lnk", "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\close - Raccourci.lnk")    # Déplacement du fichier dans le dossier démarrer
+        shutil.move("launcher_close.bat", "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\launcher_close.bat")    # Déplacement du fichier dans le dossier démarrer
         
         with open('applications.json', 'w') as data:    # Ouverture du fichier json en mode write
             
